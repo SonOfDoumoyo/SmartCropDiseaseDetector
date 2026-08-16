@@ -11,7 +11,7 @@ from app.services.redis_service import RedisService
 
 
 load_dotenv()
-
+print("Gemini key loaded:", bool(os.getenv("GEMINI_API_KEY")))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

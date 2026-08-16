@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 
 from app.services.model_service import ModelService
 from app.services.redis_service import RedisService
+from app.services.ai_service import AIService
 
 
 router = APIRouter()
@@ -86,6 +87,15 @@ async def predict(
     # -----------------------------
     try:
         result = ModelService.predict(image_bytes)
+        if "healthy" not in result["disease"].lower():
+
+            result["treatment"] = await AIService.generate_treatment(
+                crop=result["crop"],
+                disease=result["disease"],
+            )
+
+        else:
+            result["treatment"] = None
 
     except ValueError as e:
         raise HTTPException(
@@ -108,5 +118,4 @@ async def predict(
         image_hash,
         result
     )
-
     return JSONResponse(content=result)

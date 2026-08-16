@@ -34,7 +34,7 @@ export default function App() {
             setState('result');
 
         } catch (err: unknown) {
-
+            console.log('Error during prediction:', err);
             const msg =
             (err as { response?: { data?: { detail?: string } } })
             ?.response?.data?.detail ?? 'Detection failed. Please try a clearer leaf photo.';
